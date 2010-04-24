@@ -50,7 +50,7 @@ class InlineObjectParser
     }
 
     // Call sprintf using the rendered objects to get the final, processed text
-    return call_user_func_array('sprintf', $renderedObjects);
+    return call_user_func_array('sprintf', array_merge(array($text), $renderedObjects));
   }
 
   /**
