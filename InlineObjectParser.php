@@ -37,7 +37,20 @@ class InlineObjectParser
    */
   public function parse($text)
   {
-    return $text;
+    // Parse the string to retrieve tokenized text and an array of InlineObjects
+    $parsed = $this->_parseTypes($text);
+    $text = $parsed[0];
+    $objects = $parsed[1];
+
+    // Create an array of the text from the rendered objects
+    $renderedObjects = array();
+    foreach ($objects as $object)
+    {
+      $renderedObjects[] = $object->render();
+    }
+
+    // Call sprintf using the rendered objects to get the final, processed text
+    return call_user_func_array('sprintf', $renderedObjects);
   }
 
   /**
@@ -53,5 +66,81 @@ class InlineObjectParser
   public function addType($name, $class)
   {
     $this->_types[$name] = $class;
+  }
+
+  /**
+   * Parses raw text and returns a tokenized string and an array of InlineObjects
+   * 
+   * array(
+   *   0 => 'The inline object with tokens like this %s and this %s',
+   *   1 => array(
+   *     0 => InlineObject instance
+   *     1 => InlineObject instance
+   *   )
+   * )
+   * 
+   * @return array The array containing the string and the InlineObjects
+   */
+  protected function _parseTypes($text)
+  {
+    $matches = array();
+    preg_match_all($this->_getTypeRegex(), $text, $matches);
+
+    // If no matches found, return array with just the raw text
+    if (!isset($matches[0]) || !$matches[0])
+    {
+      return array($text, array());
+    }
+
+    $types = $matches[1];
+    $bodies = $matches[2];
+
+    $inlineObjects = array();
+
+    foreach ($bodies as $key => $body)
+    {
+      $type = $types[$key];
+      $class = $this->getTypeClass($type);
+
+      if (!$class)
+      {
+        throw new Exception(sprintf('Cannot process type %s. No InlineObject class found', $type));
+      }
+
+      $e = explode(' ', $body);
+      $name = $e[0];
+      
+      $options = InlineObjectToolkit::stringToArray(substr($body, strlen($e[0])));
+      
+      $inlineObject = new $class($name, $options);
+
+      // Store the object and replace the text with a token
+      $inlineObjects[] = $inlineObject;
+      $text = str_replace($matches[0][$key], '%s', $text);
+    }
+    
+    return array($text, $inlineObjects);
+  }
+
+  /**
+   * Returns the class name for the given type
+   * 
+   * @return string or null
+   */
+  public function getTypeClass($type)
+  {
+    return isset($this->_types[$type]) ? $this->_types[$type] : null;
+  }
+
+  /**
+   * Returns the regular expression used to match the inline objects
+   * 
+   * @return string
+   */
+  protected function _getTypeRegex()
+  {
+    $typesMatch = implode('|', array_keys($this->_types));
+    
+    return '/\[('.$typesMatch.'):(.*?)\]/';
   }
 }
