@@ -106,4 +106,35 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('Foo with options %s', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
   }
+
+  public function testCaching()
+  {
+    // Setup two parsers and compare results when caching is on for one of them
+    
+    // Setup a stub, only stub the getCache() method
+    $stub = $this->getMock('InlineObjectParser', array('getCache'));
+    $stub->expects($this->any())
+      ->method('getCache')
+      ->will($this->returnValue(array(
+        'cached test %s string',
+        array(new InlineObjectTypeFoo('test'))
+      )));
+    $stub->addType('foo', 'InlineObjectTypeFoo');
+    $stub->addType('bar', 'InlineObjectTypeBar');
+    
+    $parser = new InlineObjectParser();
+    $parser->addType('foo', 'InlineObjectTypeFoo');
+    $parser->addType('bar', 'InlineObjectTypeBar');
+
+    // Test a basic string, no caching on either
+    $this->assertEquals($parser->parse('test string'), $stub->parse('test string'));
+
+    // Test with caching off but a key specified, not caching takes place
+    $this->assertEquals($parser->parse('test string', 'test_key'), 'test string');
+    $this->assertEquals($parser->parse('test string2', 'test_key'), 'test string2');
+
+    // Test with caching on and a key specified, caching takes place
+    $this->assertEquals($stub->parse('test string', 'test_key'), 'cached test test_foo string');
+    $this->assertEquals($stub->parse('test string2', 'test_key'), 'cached test test_foo string');
+  }
 }

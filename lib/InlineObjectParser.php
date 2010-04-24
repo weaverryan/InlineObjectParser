@@ -34,11 +34,13 @@ class InlineObjectParser
    * Parses raw text and returns the processed result
    * 
    * @param string $text The raw text that should be processed
+   * @param string $key An optional key to use for caching
    */
-  public function parse($text)
+  public function parse($text, $key = null)
   {
     // Parse the string to retrieve tokenized text and an array of InlineObjects
-    $parsed = $this->parseTypes($text);
+    $parsed = $this->parseTypes($text, $key);
+
     $text = $parsed[0];
     $objects = $parsed[1];
 
@@ -84,8 +86,14 @@ class InlineObjectParser
    * 
    * @return array The array containing the string and the InlineObjects
    */
-  public function parseTypes($text)
+  public function parseTypes($text, $key = null)
   {
+    // Check for a cached result
+    if ($key !== null && $parsed = $this->getCache($key))
+    {
+      return $parsed;
+    }
+
     $matches = array();
     preg_match_all($this->_getTypeRegex(), $text, $matches);
 
@@ -122,7 +130,15 @@ class InlineObjectParser
       $text = str_replace($matches[0][$key], '%s', $text);
     }
 
-    return array($text, $inlineObjects);
+    $parsed = array($text, $inlineObjects);
+
+    // Set the parsed object to cache
+    if ($key !== null)
+    {
+      $this->setCache($key, $parsed);
+    }
+
+    return $parsed;
   }
 
   /**
@@ -155,5 +171,32 @@ class InlineObjectParser
     $typesMatch = implode('|', array_keys($this->_types));
 
     return '/\[('.$typesMatch.'):(.*?)\]/';
+  }
+
+  /**
+   * Returns the cached parse result for a given job.
+   * 
+   * The object that's cached is an array that matches the result of parseTypes()
+   * 
+   * This should be overrridden if you need to cache parsing
+   * 
+   * @param string $key The key of the cache to retrieve
+   * @return array or false
+   */
+  public function getCache($key)
+  {
+    return false;
+  }
+
+  /**
+   * Puts the parsed array into cache.
+   * 
+   * This should be overrridden if you need to cache parsing
+   * 
+   * @param string $key The key to give this cache object
+   * @param array $data The data array to cache
+   */
+  public function setCache($key, $data)
+  {
   }
 }
