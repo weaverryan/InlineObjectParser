@@ -2,7 +2,7 @@ InlineObjectParser
 ==================
 
 A library to allow for simple objects to be written in plain text and then
-translated and ultimately rendered.
+translated and ultimately rendered in any way.
 
     Display a [image:banana.png width="50"] image.
     
