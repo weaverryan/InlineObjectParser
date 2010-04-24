@@ -12,7 +12,7 @@ InlineObjectAutoloader::register();
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
 
-class InlineObjectTest extends PHPUnit_Framework_TestCase
+class InlineObjectTypeTest extends PHPUnit_Framework_TestCase
 {
   public function testGetOption()
   {
