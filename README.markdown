@@ -29,11 +29,11 @@ Creating Syntax Types
 In order to use the parser, you'll need to map each type (e.g. `image`) to
 a class that will handle the rendering for that type.
 
-Each inline syntax corresponds to an instance of `InlineObject`, which is
+Each inline syntax corresponds to an instance of `InlineObjectType`, which is
 an abstract class. To define a new syntax, create a subclass of
-`InlineObject` and define how it should be rendered.
+`InlineObjectType` and define how it should be rendered.
 
-    class InlineObjectImage
+    class InlineObjectImage extends InlineObjectType
     {
       public function render()
       {
