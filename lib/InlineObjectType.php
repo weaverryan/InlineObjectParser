@@ -3,11 +3,11 @@
 /**
  * Represents an object that is constructed using inline code
  * 
- * @package     InlineObjectParser
+ * @package     InlineObject
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
 
-class InlineObjectParser
+class InlineObjectType
 {
 
   /**

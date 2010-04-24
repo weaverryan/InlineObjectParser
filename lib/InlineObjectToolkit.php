@@ -5,7 +5,7 @@
  * 
  * Taken from the symfony project (http://www.symfony-project.org)
  * 
- * @package     InlineObjectParser
+ * @package     InlineObject
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
 
