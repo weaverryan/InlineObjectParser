@@ -109,16 +109,16 @@ class InlineObjectParser
 
       $e = explode(' ', $body);
       $name = $e[0];
-      
+
       $options = InlineObjectToolkit::stringToArray(substr($body, strlen($e[0])));
-      
+
       $inlineObject = new $class($name, $options);
 
       // Store the object and replace the text with a token
       $inlineObjects[] = $inlineObject;
       $text = str_replace($matches[0][$key], '%s', $text);
     }
-    
+
     return array($text, $inlineObjects);
   }
 
@@ -133,6 +133,16 @@ class InlineObjectParser
   }
 
   /**
+   * Returns the array of type => class entries that will be processed
+   * 
+   * @return array
+   */
+  public function getTypes()
+  {
+    return $this->_types;
+  }
+
+  /**
    * Returns the regular expression used to match the inline objects
    * 
    * @return string
@@ -140,7 +150,7 @@ class InlineObjectParser
   protected function _getTypeRegex()
   {
     $typesMatch = implode('|', array_keys($this->_types));
-    
+
     return '/\[('.$typesMatch.'):(.*?)\]/';
   }
 }
