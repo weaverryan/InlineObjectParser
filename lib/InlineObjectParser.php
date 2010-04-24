@@ -78,6 +78,9 @@ class InlineObjectParser
    *     1 => InlineObject instance
    *   )
    * )
+   *
+   * This will not commonly be used directly, unless you need a lower-level
+   * of granularity on the parsing.
    * 
    * @return array The array containing the string and the InlineObjects
    */
