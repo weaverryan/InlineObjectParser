@@ -45,7 +45,11 @@ an abstract class. To define a new syntax, create a subclass of
         }
         else
         {
-          return sprintf('<img src="%s" %s />', $url, self::optionsToAttributes($this->getOptions()));
+          return sprintf(
+            '<img src="%s" %s />',
+            $url,
+            InlineObjectToolkit::arrayToAttributes($this->getOptions())
+          );
         }
       }
     }

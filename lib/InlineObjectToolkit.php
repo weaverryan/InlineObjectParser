@@ -20,6 +20,11 @@ class InlineObjectToolkit
    */
   public static function stringToArray($string)
   {
+    if (is_array($string))
+    {
+      return $string;
+    }
+
     preg_match_all('/
       \s*(\w+)              # key                               \\1
       \s*=\s*               # =
@@ -76,5 +81,31 @@ class InlineObjectToolkit
     }
 
     return $value;
+  }
+
+  /**
+   * Translates an array of key value pairs into a string that can be
+   * used as attributes in a tag
+   * 
+   * $arr = array('width' => 50);
+   * echo '<img src="/images/my_img.jpg" '.InlineObjectToolkit::arrayToAttributes($arr).'/>';
+   * 
+   * $attrs = 'width="50"';
+   * echo '<img src="/images/my_img.jpg" '.InlineObjectToolkit::attrs($arr).'/>';
+   * 
+   * @param mixed $attributes The array of attributes to translate or a string of attributes
+   */
+  public static function arrayToAttributes($attributes = array())
+  {
+    // Guarantee that attributes is an array
+    $attributes = self::stringToArray($attributes);
+
+    $html = '';
+    foreach ($attributes as $key => $value)
+    {
+      $html .= ' '.$key.'="'.htmlspecialchars($value, ENT_COMPAT, 'utf-8').'"';
+    }
+
+    return $html;
   }
 }
