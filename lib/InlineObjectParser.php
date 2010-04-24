@@ -38,7 +38,7 @@ class InlineObjectParser
   public function parse($text)
   {
     // Parse the string to retrieve tokenized text and an array of InlineObjects
-    $parsed = $this->_parseTypes($text);
+    $parsed = $this->parseTypes($text);
     $text = $parsed[0];
     $objects = $parsed[1];
 
@@ -81,7 +81,7 @@ class InlineObjectParser
    * 
    * @return array The array containing the string and the InlineObjects
    */
-  protected function _parseTypes($text)
+  public function parseTypes($text)
   {
     $matches = array();
     preg_match_all($this->_getTypeRegex(), $text, $matches);
