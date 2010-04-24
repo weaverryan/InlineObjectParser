@@ -9,7 +9,7 @@
  * 
  * The final output is a processed string
  * 
- * @package     InlineObject
+ * @package     InlineObjectParser
  * @author      Ryan Weaver <ryan@thatsquality.com>
  * @author      Jonathan H. Wage <jonwage@gmail.com>
  */

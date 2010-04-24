@@ -5,7 +5,7 @@ require_once dirname(__FILE__).'/../../lib/InlineObjectAutoloader.php';
 InlineObjectAutoloader::register();
 
 /**
- * Unit test for InlineObject
+ * Unit test for InlineObjectType
  * 
  * @package     InlineObjectParser
  * @subpackage  test

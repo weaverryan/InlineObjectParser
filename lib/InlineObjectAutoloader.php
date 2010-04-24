@@ -3,7 +3,7 @@
 /**
  * Autoloader for the InlineObject library
  * 
- * @package     InlineObject
+ * @package     InlineObjectParser
  * @subpackage  autoload
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */

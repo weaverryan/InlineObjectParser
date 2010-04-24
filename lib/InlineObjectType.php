@@ -3,7 +3,7 @@
 /**
  * Represents an object that is constructed using inline code
  * 
- * @package     InlineObject
+ * @package     InlineObjectParser
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
 
