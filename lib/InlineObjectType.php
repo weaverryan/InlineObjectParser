@@ -7,7 +7,7 @@
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
 
-class InlineObjectType
+abstract class InlineObjectType
 {
 
   /**
