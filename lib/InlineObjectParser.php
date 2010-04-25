@@ -28,6 +28,15 @@ class InlineObjectParser
   public function __construct($types = array())
   {
     $this->_types = $types;
+    
+    $this->_initialize();
+  }
+
+  /**
+   * Initialize the parser
+   */
+  protected function _initialize()
+  {
   }
 
   /**
@@ -51,8 +60,7 @@ class InlineObjectParser
       $renderedObjects[] = $object->render();
     }
 
-    // Call sprintf using the rendered objects to get the final, processed text
-    return call_user_func_array('sprintf', array_merge(array($text), $renderedObjects));
+    return $this->_combineTextAndRenderedObjects($text, $renderedObjects);
   }
 
   /**
@@ -68,6 +76,16 @@ class InlineObjectParser
   public function addType($name, $class)
   {
     $this->_types[$name] = $class;
+  }
+
+  /**
+   * Takes in the tokenized string and inline objects and returns the
+   * fully-processed string
+   */
+  protected function _combineTextAndRenderedObjects($text, $renderedObjects)
+  {
+    // Call sprintf using the rendered objects to get the final, processed text
+    return call_user_func_array('sprintf', array_merge(array($text), $renderedObjects));
   }
 
   /**
