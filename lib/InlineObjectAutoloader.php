@@ -9,6 +9,12 @@
  */
 class InlineObjectAutoloader
 {
+  protected static $_classes = array(
+    'InlineObjectParser',
+    'InlineObjectToolkit',
+    'InlineObjectType',
+  );
+
   /**
    * Registers InlineObjectAutoloader as an SPL autoloader.
    */
@@ -27,7 +33,7 @@ class InlineObjectAutoloader
    */
   public function autoload($class)
   {
-    if (0 !== strpos($class, 'InlineObject'))
+    if (!in_array($class, self::$_classes))
     {
       return false;
     }
