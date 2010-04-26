@@ -33,7 +33,7 @@ an abstract class. To define a new syntax, create a subclass of
     {
       public function render()
       {
-        $url = '/images/'.$this->identifier;
+        $url = '/images/'.$this->getName();
         
         if ($this->getOption('link'))
         {
@@ -42,7 +42,7 @@ an abstract class. To define a new syntax, create a subclass of
         else
         {
           return sprintf(
-            '<img src="%s" %s />',
+            '<img src="%s"%s />',
             $url,
             InlineObjectToolkit::arrayToAttributes($this->getOptions())
           );
@@ -56,3 +56,44 @@ Next, just tell the parser about the new syntax.
     $parser->register('image', 'InlineObjectImage');
     
     echo $parser->parse('Display a [image:banana.png width="50"] image.');
+
+Caching
+-------
+
+With large text, the regex needed to process in the inline objects can take
+a toll on performance. Fortunately, caching the regex parsing is quite easily.
+
+The `InlineObjectParser` class exposes two caching methods: `getCache()`
+and `setCache()`. By default, these methods do nothing - they are stubs
+that you can use to do any type of caching you need.
+
+To activate caching, create and use a subclass of `InlineObjectParser`. In
+this class, override `getCache()` and `setCache()` to cache as you please:
+
+    class InlineObjectCacheableParser extends InlineObjectParser
+    {
+      public function getCache($key)
+      {
+        return unserialize(file_get_contents('/tmp/'.$key));
+      }
+      
+      public function setCache($key, $data)
+      {
+        file_put_contents('/tmp/'.$key, serialize($data));
+      }
+    }
+
+More Information
+----------------
+
+This library was originally extracted from [sympal CMF](http://www.sympalphp.org)
+and is intended to be used as a standalone library for embedding simple
+inline objects.
+
+The library is complete with unit tests. To see a practical use of this
+library, see the symfony plugin [sfInlineObjectPlugin](http://github.com/weaverryan/sfInlineObjectPlugin).
+
+If you have comments, questions or would like to contribute, feel free to
+contact me at ryan[at]thatsquality.com
+
+
