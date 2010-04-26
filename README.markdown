@@ -14,16 +14,19 @@ consider the following possibilities.
     Show me pi: [const:M_PI].
     Show me pi: 3.1415926535898.
 
-    Show me the cosine of a number: [cos arg=3.1415926].
+    Show me the cosine of a number: [fxn:cos arg=3.1415926].
     Show me the cosine of a number: -1.
+
+    Show me the current year: [date:year]
+    Show me the current year: 2010
 
     Capitalize the next [caps:word].
     Capitalize the next WORD.
 
-    Cut off the next word at four [short:letters length=4].
-    Cut off the next word at four lett.
+    Return only a "[substring:portion length=4 start=2]" of a word.
+    Return only a "rtio" of a word.
 
-    I could even translate a [translate:word language=es] into spanish.
+    I could even translate a [translate:word from=en to=es] into spanish.
     I could even translate a palabra into spanish.
 
 Usage
@@ -32,7 +35,12 @@ Usage
 To parse a particular string, simply create a parser object and pass it
 to the ->parse() function.
 
+    require_once '/path/to/lib/InlineObjectAutoloader.php';
+    InlineObjectAutoloader::register();
+
     $parser = new InlineObjectParser();
+    $parser->addType('image', 'InlineObjectImage'); // register any types
+
     echo $parser->parse('Display a [image:banana.png width="50"] image.');
 
 Creating Syntax Types
@@ -59,7 +67,8 @@ an abstract class. To define a new syntax, create a subclass of
       }
     }
 
-Next, just tell the parser about the new syntax.
+To use the new type, you simply need to tell the parser about it with the
+`register()` method.
 
     $parser = new InlineObjectParser();
     $parser->register('image', 'InlineObjectImage');
@@ -105,4 +114,11 @@ library, see the symfony plugin [sfInlineObjectPlugin](http://github.com/weaverr
 If you have comments, questions or would like to contribute, feel free to
 contact me at ryan[at]thatsquality.com
 
+TODO
+----
 
+The inline name of an object needs to have the ability to be surrounded
+by quotes in case it contains a space character. The otpions already have
+this ability. For example:
+
+    [photo:"My Photo" width=50]
