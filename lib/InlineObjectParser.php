@@ -136,10 +136,27 @@ class InlineObjectParser
         throw new Exception(sprintf('Cannot process type %s. No InlineObject class found', $type));
       }
 
-      $e = explode(' ', $body);
-      $name = $e[0];
+      // Determine if the name was wrapped in quotes and handle
+      if (strpos($body, '"') === 0)
+      {
+        // Split on quotes, the name will be the second entry (the first is blank)
+        $e = explode('"', $body);
+        $name = $e[1];
+        unset($e[0], $e[1]);
+        
+        $optionsString = implode('"', $e);
+      }
+      else
+      {
+        // Split on spaces, the name will be the first entry
+        $e = explode(' ', $body);
+        $name = $e[0];
+        unset($e[0]);
+        
+        $optionsString = implode(' ', $e);
+      }
 
-      $options = InlineObjectToolkit::stringToArray(substr($body, strlen($e[0])));
+      $options = InlineObjectToolkit::stringToArray($optionsString);
 
       $inlineObject = new $class($name, $options);
 

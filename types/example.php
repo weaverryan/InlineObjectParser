@@ -72,7 +72,7 @@ require_once dirname(__FILE__).'/InlineObjectTranslate.php';
 $parser = new InlineObjectParser();
 $parser->addType('translate', 'InlineObjectTranslate');
 
-$text = 'I could even translate a [translate:word from=en to=es] into spanish.';
+$text = 'I could even [translate:"translate a phrase" from=en to=es] into spanish.';
 render_value($text, $parser->parse($text), 'Translate');
 
 

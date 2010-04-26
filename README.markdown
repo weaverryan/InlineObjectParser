@@ -26,8 +26,8 @@ consider the following possibilities.
     Return only a "[substring:portion length=4 start=2]" of a word.
     Return only a "rtio" of a word.
 
-    I could even translate a [translate:word from=en to=es] into spanish.
-    I could even translate a palabra into spanish.
+    I could even [translate:"translate a phrase" from=en to=es] into spanish.
+    I could even traducir una frase into spanish.
 
 Usage
 -----
@@ -113,12 +113,3 @@ library, see the symfony plugin [sfInlineObjectPlugin](http://github.com/weaverr
 
 If you have comments, questions or would like to contribute, feel free to
 contact me at ryan[at]thatsquality.com
-
-TODO
-----
-
-The inline name of an object needs to have the ability to be surrounded
-by quotes in case it contains a space character. The otpions already have
-this ability. For example:
-
-    [photo:"My Photo" width=50]

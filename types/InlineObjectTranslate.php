@@ -8,7 +8,7 @@
  * 
  * $parser = new InlineObjectParser();
  * $parser->addType('translate', 'InlineObjectTranslate');
- * echo $parser->parse('I could even translate a [translate:word from=en to=es] into spanish.');
+ * echo $parser->parse('I could even [translate:"translate a phrase" from=en to=es] into spanish.');
  * 
  * Original translation code taken from Doctrine's GoogleI18n template:
  * http://www.doctrine-project.org/extension/GoogleI18n
