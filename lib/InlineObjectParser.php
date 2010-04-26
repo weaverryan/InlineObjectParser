@@ -104,10 +104,10 @@ class InlineObjectParser
    * 
    * @return array The array containing the string and the InlineObjects
    */
-  public function parseTypes($text, $key = null)
+  public function parseTypes($text, $cacheKey = null)
   {
     // Check for a cached result
-    if ($key !== null && $parsed = $this->getCache($key))
+    if ($cacheKey !== null && $parsed = $this->getCache($cacheKey))
     {
       return $parsed;
     }
@@ -151,9 +151,9 @@ class InlineObjectParser
     $parsed = array($text, $inlineObjects);
 
     // Set the parsed object to cache
-    if ($key !== null)
+    if ($cacheKey !== null)
     {
-      $this->setCache($key, $parsed);
+      $this->setCache($cacheKey, $parsed);
     }
 
     return $parsed;
