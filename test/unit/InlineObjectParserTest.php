@@ -127,7 +127,8 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
     $parser->addType('bar', 'InlineObjectTypeBar');
 
     // Test a basic string, no caching on either
-    $this->assertEquals($parser->parse('test string'), $stub->parse('test string'));
+    $this->assertEquals($parser->parse('test string [foo:test]'), 'test string test_foo');
+    $this->assertEquals($stub->parse('test string [foo:test]'), 'test string test_foo');
 
     // Test with caching off but a key specified, not caching takes place
     $this->assertEquals($parser->parse('test string', 'test_key'), 'test string');
