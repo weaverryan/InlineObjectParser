@@ -7,8 +7,24 @@ translated and ultimately rendered in any way.
     Display a [image:banana.png width="50"] image.
     Display a <img src="/images/banana.png" width="50" /> image.
 
-    Just display the url: [image:banana.png link="true"].
-    Just display the url: /images/banana.png.
+The common inline syntax is passed to an object where it can be rendered
+in any way. This is infinitely configurable and expandle. For example,
+consider the following possibilities.
+
+    Show me pi: [const:M_PI].
+    Show me pi: 3.1415926535898.
+
+    Show me the cosine of a number: [cos arg=3.1415926].
+    Show me the cosine of a number: -1.
+
+    Capitalize the next [caps:word].
+    Capitalize the next WORD.
+
+    Cut off the next word at four [short:letters length=4].
+    Cut off the next word at four lett.
+
+    I could even translate a [translate:word language=es] into spanish.
+    I could even translate a palabra into spanish.
 
 Usage
 -----
@@ -35,18 +51,11 @@ an abstract class. To define a new syntax, create a subclass of
       {
         $url = '/images/'.$this->getName();
         
-        if ($this->getOption('link'))
-        {
-          return $url;
-        }
-        else
-        {
-          return sprintf(
-            '<img src="%s"%s />',
-            $url,
-            InlineObjectToolkit::arrayToAttributes($this->getOptions())
-          );
-        }
+        return sprintf(
+          '<img src="%s"%s />',
+          $url,
+          InlineObjectToolkit::arrayToAttributes($this->getOptions())
+        );
       }
     }
 
