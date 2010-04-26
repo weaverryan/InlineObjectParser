@@ -88,7 +88,7 @@ More Information
 
 This library was originally extracted from [sympal CMF](http://www.sympalphp.org)
 and is intended to be used as a standalone library for embedding simple
-inline objects.
+inline objects. The original code was written by Jon Wage and Ryan Weaver.
 
 The library is complete with unit tests. To see a practical use of this
 library, see the symfony plugin [sfInlineObjectPlugin](http://github.com/weaverryan/sfInlineObjectPlugin).
