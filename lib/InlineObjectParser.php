@@ -106,8 +106,13 @@ class InlineObjectParser
    */
   public function parseTypes($text, $cacheKey = null)
   {
+    if ($cacheKey === null)
+    {
+      $cacheKey = md5($text);
+    }
+
     // Check for a cached result
-    if ($cacheKey !== null && $parsed = $this->getCache($cacheKey))
+    if ($parsed = $this->getCache($cacheKey))
     {
       return $parsed;
     }
@@ -168,10 +173,7 @@ class InlineObjectParser
     $parsed = array($text, $inlineObjects);
 
     // Set the parsed object to cache
-    if ($cacheKey !== null)
-    {
-      $this->setCache($cacheKey, $parsed);
-    }
+    $this->setCache($cacheKey, $parsed);
 
     return $parsed;
   }
