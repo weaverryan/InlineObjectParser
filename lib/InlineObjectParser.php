@@ -55,9 +55,9 @@ class InlineObjectParser
 
     // Create an array of the text from the rendered objects
     $renderedObjects = array();
-    foreach ($objects as $object)
+    foreach ($objects as $key => $object)
     {
-      $renderedObjects[] = $object->render();
+      $renderedObjects[$key] = $object->render();
     }
 
     return $this->_combineTextAndRenderedObjects($text, $renderedObjects);
@@ -84,8 +84,12 @@ class InlineObjectParser
    */
   protected function _combineTextAndRenderedObjects($text, $renderedObjects)
   {
-    // Call sprintf using the rendered objects to get the final, processed text
-    return call_user_func_array('sprintf', array_merge(array($text), $renderedObjects));
+    foreach ($renderedObjects as $key => $renderedObject)
+    {
+      $text = str_replace(self::_generateInlineToken($key), $renderedObject, $text);
+    }
+    
+    return $text;
   }
 
   /**
@@ -163,11 +167,13 @@ class InlineObjectParser
 
       $options = InlineObjectToolkit::stringToArray($optionsString);
 
+      // create an incrementing key for replacement later
+      $objectKey = self::_generateInlineToken($key);
       $inlineObject = new $class($name, $options);
 
       // Store the object and replace the text with a token
-      $inlineObjects[] = $inlineObject;
-      $text = str_replace($matches[0][$key], '%s', $text);
+      $inlineObjects[$key] = $inlineObject;
+      $text = str_replace($matches[0][$key], $objectKey, $text);
     }
 
     $parsed = array($text, $inlineObjects);
@@ -235,5 +241,15 @@ class InlineObjectParser
    */
   public function setCache($key, $data)
   {
+  }
+
+  /**
+   * Returns the inline token based on the given token numer
+   * 
+   * @return string
+   */
+  protected static function _generateInlineToken($num)
+  {
+    return '%%INLINE_OBJECT_'.$num.'%%';
   }
 }
