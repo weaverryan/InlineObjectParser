@@ -21,27 +21,30 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
 {
   public function testTypeMutations()
   {
+    $foo = new InlineObjectTypeFoo();
+    $bar = new InlineObjectTypeBar();
+
     // Add a type via the constructor
     $parser = new InlineObjectParser(array(
-      'testing_type' => 'InlineObjectTestingType',
+      'testing_type' => $foo,
     ));
 
     $this->assertEquals($parser->getTypes(), array(
-      'testing_type' => 'InlineObjectTestingType',
+      'testing_type' => $foo,
     ));
-    $this->assertEquals($parser->getTypeClass('testing_type'), 'InlineObjectTestingType');
+    $this->assertEquals($parser->getType('testing_type'), $foo);
 
     // Override the class of the existing type
-    $parser->addType('testing_type', 'NewTypeClass');
+    $parser->addType('testing_type', $bar);
     $this->assertEquals($parser->getTypes(), array(
-      'testing_type' => 'NewTypeClass',
+      'testing_type' => $bar,
     ));
 
     // Add another type
-    $parser->addType('another_type', 'AnotherTypeClass');
+    $parser->addType('another_type', $foo);
     $this->assertEquals($parser->getTypes(), array(
-      'testing_type' => 'NewTypeClass',
-      'another_type' => 'AnotherTypeClass',
+      'testing_type' => $bar,
+      'another_type' => $foo,
     ));
   }
 
@@ -58,8 +61,10 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
     );
 
     $parser = new InlineObjectParser();
-    $parser->addType('foo', 'InlineObjectTypeFoo');
-    $parser->addType('bar', 'InlineObjectTypeBar');
+    $foo = new InlineObjectTypeFoo();
+    $bar = new InlineObjectTypeBar();
+    $parser->addType('foo', $foo);
+    $parser->addType('bar', $bar);
 
     foreach ($results as $source => $expected)
     {
@@ -70,8 +75,10 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
   public function testParseTypes()
   {
     $parser = new InlineObjectParser();
-    $parser->addType('foo', 'InlineObjectTypeFoo');
-    $parser->addType('bar', 'InlineObjectTypeBar');
+    $foo = new InlineObjectTypeFoo();
+    $bar = new InlineObjectTypeBar();
+    $parser->addType('foo', $foo);
+    $parser->addType('bar', $bar);
 
     $parsed = $parser->parseTypes('No embedded types');
     $this->assertEquals('No embedded types', $parsed[0]);
@@ -111,7 +118,9 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
   public function testCaching()
   {
     // Setup two parsers and compare results when caching is on for one of them
-    
+    $foo = new InlineObjectTypeFoo();
+    $bar = new InlineObjectTypeBar();
+
     // Setup a stub, only stub the getCache() method
     $stub = $this->getMock('InlineObjectParser', array('getCache'));
     $stub->expects($this->any())
@@ -120,12 +129,12 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
         'cached test %%INLINE_OBJECT_0%% string',
         array(0 => new InlineObjectTypeFoo('test'))
       )));
-    $stub->addType('foo', 'InlineObjectTypeFoo');
-    $stub->addType('bar', 'InlineObjectTypeBar');
+    $stub->addType('foo', $foo);
+    $stub->addType('bar', $bar);
     
     $parser = new InlineObjectParser();
-    $parser->addType('foo', 'InlineObjectTypeFoo');
-    $parser->addType('bar', 'InlineObjectTypeBar');
+    $parser->addType('foo', $foo);
+    $parser->addType('bar', $bar);
 
     // Test a basic string, caching automatically takes place
     $this->assertEquals($stub->parse('test string [foo:test]'), 'cached test test_foo string');

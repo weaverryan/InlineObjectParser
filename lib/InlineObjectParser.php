@@ -17,8 +17,9 @@
 class InlineObjectParser
 {
   /**
-   * @var array A map of type => class that identifies the class to use
-   *            for each inline type
+   * An array of InlineObjectType objects where the key is the inline key
+   *
+   * @var array
    */
   protected $_types = array();
 
@@ -51,13 +52,22 @@ class InlineObjectParser
     $parsed = $this->parseTypes($text, $key);
 
     $text = $parsed[0];
-    $objects = $parsed[1];
+    $objects = $parsed[1]; // array with type, name, and options keys
 
     // Create an array of the text from the rendered objects
     $renderedObjects = array();
-    foreach ($objects as $key => $object)
+    foreach ($objects as $key => $inlineObject)
     {
-      $renderedObjects[$key] = $object->render();
+      $typeObject = $this->getType($inlineObject['type']);
+      if (!$typeObject)
+      {
+        throw new sfException(sprintf('No inline object type defined for "%s"', $inlineObject['type']));
+      }
+
+      $renderedObjects[$key] = $typeObject->render(
+        $inlineObject['name'],
+        $inlineObject['type']
+      );
     }
 
     return $this->_combineTextAndRenderedObjects($text, $renderedObjects);
@@ -67,15 +77,15 @@ class InlineObjectParser
    * Add a object type to be processed
    * 
    * @example
-   * $parser->addType('image', 'InlineObjectImage');
+   * $parser->addType('image', $inlineType);
    * 
    * @param string $name  The name by which the type will be identified when
    *                      written inline
-   * @param string $class The InlineObject class that will render the type
+   * @param InlineObjectType $Type The InlineObject class that will render the type
    */
-  public function addType($name, $class)
+  public function addType($name, InlineObjectType $type)
   {
-    $this->_types[$name] = $class;
+    $this->_types[$name] = $type;
   }
 
   /**
@@ -137,14 +147,6 @@ class InlineObjectParser
 
     foreach ($bodies as $key => $body)
     {
-      $type = $types[$key];
-      $class = $this->getTypeClass($type);
-
-      if (!$class)
-      {
-        throw new Exception(sprintf('Cannot process type %s. No InlineObject class found', $type));
-      }
-
       // Determine if the name was wrapped in quotes and handle
       if (strpos($body, '"') === 0)
       {
@@ -169,10 +171,13 @@ class InlineObjectParser
 
       // create an incrementing key for replacement later
       $objectKey = self::_generateInlineToken($key);
-      $inlineObject = new $class($name, $options);
 
-      // Store the object and replace the text with a token
-      $inlineObjects[$key] = $inlineObject;
+      // Store the inline object information in the array
+      $inlineObjects[$key] = array(
+        'type'    => $types[$key],
+        'name'    => $name,
+        'options' => $options,
+      );
       $text = str_replace($matches[0][$key], $objectKey, $text);
     }
 
@@ -185,13 +190,14 @@ class InlineObjectParser
   }
 
   /**
-   * Returns the class name for the given type
-   * 
-   * @return string or null
+   * Returns the InlineObjectType connected with a given name/key
+   *
+   * @param  string $name The name/key corresponding to the type
+   * @return InlineObjectType
    */
-  public function getTypeClass($type)
+  public function getType($name)
   {
-    return isset($this->_types[$type]) ? $this->_types[$type] : null;
+    return isset($this->_types[$name]) ? $this->_types[$name] : null;
   }
 
   /**
@@ -244,7 +250,7 @@ class InlineObjectParser
   }
 
   /**
-   * Returns the inline token based on the given token numer
+   * Returns the inline token based on the given token number
    * 
    * @return string
    */

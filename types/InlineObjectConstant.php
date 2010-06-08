@@ -17,8 +17,8 @@
 
 class InlineObjectConstant extends InlineObjectType
 {
-  public function render()
+  public function render($name, $options)
   {
-    return constant($this->getName());
+    return constant($name);
   }
 }

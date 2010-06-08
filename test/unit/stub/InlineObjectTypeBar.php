@@ -2,8 +2,8 @@
 
 class InlineObjectTypeBar extends InlineObjectType
 {
-  public function render()
+  public function render($name, $options)
   {
-    return $this->getName().'_bar';
+    return $name.'_bar';
   }
 }

@@ -17,9 +17,9 @@
 
 class InlineObjectDate extends InlineObjectType
 {
-  public function render()
+  public function render($name, $options)
   {
-    switch ($this->getName())
+    switch ($name)
     {
       case 'year':
         return date('Y');

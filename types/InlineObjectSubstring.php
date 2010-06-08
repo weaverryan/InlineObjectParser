@@ -17,18 +17,18 @@
 
 class InlineObjectSubstring extends InlineObjectType
 {
-  public function render()
+  public function render($name, $options)
   {
-    $start = $this->getOption('start', 0);
-    $length = $this->getOption('length', false);
+    $start = isset($options['start']) ? $options['start'] : 0;
+    $length = isset($options['length']) ? $options['length'] : false;
     
     if ($length === false)
     {
-      return substr($this->getName(), $start);
+      return substr($name, $start);
     }
     else
     {
-      return substr($this->getName(), $start, $length);
+      return substr($name, $start, $length);
     }
   }
 }

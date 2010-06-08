@@ -2,8 +2,8 @@
 
 class InlineObjectTypeFoo extends InlineObjectType
 {
-  public function render()
+  public function render($name, $options)
   {
-    return $this->getName().'_foo';
+    return $name.'_foo';
   }
 }
