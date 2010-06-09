@@ -9,12 +9,19 @@
 
 abstract class InlineObjectType
 {
+  /**
+   * @var string
+   */
+  protected $_name;
 
   /**
    * Class constructor
+   *
+   * @param string $name The name/key that this type is matching to
    */
-  public function __construct()
+  public function __construct($name)
   {
+    $this->_name = $name;
   }
 
   /**
@@ -24,4 +31,14 @@ abstract class InlineObjectType
    * @param array $options The inline options for this object
    */
   abstract public function render($name, $options);
+
+  /**
+   * Returns the name/key for this type.
+   *
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->_name;
+  }
 }

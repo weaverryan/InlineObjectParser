@@ -14,14 +14,16 @@ InlineObjectAutoloader::register();
 
 class InlineObjectTypeTest extends PHPUnit_Framework_TestCase
 {
-  protected function _createStub()
+  public function testGetName()
+  {
+    $type = $this->_createStub();
+    $this->assertEquals('type_name', $type->getName());
+  }
+
+  protected function _createStub($name = 'type_name')
   {
     $stub = $this->getMockForAbstractClass('InlineObjectType', array(
       'type_name',
-      array(
-        'option1' => 'foo',
-        'option2' => null,
-      )
     ));
     $stub->expects($this->any())
       ->method('render')

@@ -28,7 +28,10 @@ class InlineObjectParser
    */
   public function __construct($types = array())
   {
-    $this->_types = $types;
+    foreach ($types as $type)
+    {
+      $this->addType($type);
+    }
     
     $this->_initialize();
   }
@@ -79,13 +82,11 @@ class InlineObjectParser
    * @example
    * $parser->addType('image', $inlineType);
    * 
-   * @param string $name  The name by which the type will be identified when
-   *                      written inline
    * @param InlineObjectType $Type The InlineObject class that will render the type
    */
-  public function addType($name, InlineObjectType $type)
+  public function addType(InlineObjectType $type)
   {
-    $this->_types[$name] = $type;
+    $this->_types[$type->getName()] = $type;
   }
 
   /**

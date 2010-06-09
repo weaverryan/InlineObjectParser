@@ -15,7 +15,7 @@ InlineObjectAutoloader::register();
  */
 require_once dirname(__FILE__).'/InlineObjectCapitalize.php';
 $parser = new InlineObjectParser();
-$parser->addType('caps', new InlineObjectCapitalize());
+$parser->addType(new InlineObjectCapitalize('caps'));
 
 $text = 'Capitalize the next [caps:word].';
 render_value($text, $parser->parse($text), 'Capitalize');
@@ -26,7 +26,7 @@ render_value($text, $parser->parse($text), 'Capitalize');
  */
 require_once dirname(__FILE__).'/InlineObjectConstant.php';
 $parser = new InlineObjectParser();
-$parser->addType('const', new InlineObjectConstant());
+$parser->addType(new InlineObjectConstant('const'));
 
 $text = '[const:M_PI]';
 render_value($text, $parser->parse($text), 'Constant');
@@ -37,7 +37,7 @@ render_value($text, $parser->parse($text), 'Constant');
  */
 require_once dirname(__FILE__).'/InlineObjectDate.php';
 $parser = new InlineObjectParser();
-$parser->addType('date', new InlineObjectDate());
+$parser->addType(new InlineObjectDate('date'));
 
 $text = '[date:year]';
 render_value($text, $parser->parse($text), 'Date');
@@ -48,7 +48,7 @@ render_value($text, $parser->parse($text), 'Date');
  */
 require_once dirname(__FILE__).'/InlineObjectFunction.php';
 $parser = new InlineObjectParser();
-$parser->addType('fxn', new InlineObjectFunction());
+$parser->addType(new InlineObjectFunction('fxn'));
 
 $text = '[fxn:cos arg=3.1415926]';
 render_value($text, $parser->parse($text), 'Function');
@@ -59,7 +59,7 @@ render_value($text, $parser->parse($text), 'Function');
  */
 require_once dirname(__FILE__).'/InlineObjectSubstring.php';
 $parser = new InlineObjectParser();
-$parser->addType('substring', new InlineObjectSubstring());
+$parser->addType(new InlineObjectSubstring('substring'));
 
 $text = 'Return only a "[substring:portion length=4 start=2]" of a word.';
 render_value($text, $parser->parse($text), 'Substring');
@@ -70,7 +70,7 @@ render_value($text, $parser->parse($text), 'Substring');
  */
 require_once dirname(__FILE__).'/InlineObjectTranslate.php';
 $parser = new InlineObjectParser();
-$parser->addType('translate', new InlineObjectTranslate());
+$parser->addType(new InlineObjectTranslate('translate'));
 
 $text = 'I could even [translate:"translate a phrase" from=en to=es] into spanish.';
 render_value($text, $parser->parse($text), 'Translate');
