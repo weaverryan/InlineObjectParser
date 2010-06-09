@@ -55,23 +55,10 @@ class InlineObjectParser
     $parsed = $this->parseTypes($text, $key);
 
     $text = $parsed[0];
-    $objects = $parsed[1]; // array with type, name, and arguments keys
+    $inlineObjectsArr = $parsed[1]; // array with type, name, and arguments keys
 
     // Create an array of the text from the rendered objects
-    $renderedObjects = array();
-    foreach ($objects as $key => $inlineObject)
-    {
-      $typeObject = $this->getType($inlineObject['type']);
-      if (!$typeObject)
-      {
-        throw new sfException(sprintf('No inline object type defined for "%s"', $inlineObject['type']));
-      }
-
-      $renderedObjects[$key] = $typeObject->render(
-        $inlineObject['name'],
-        $inlineObject['arguments']
-      );
-    }
+    $renderedObjects = $this->_renderInlineObjectsFromArray($inlineObjectsArr);
 
     return $this->_combineTextAndRenderedObjects($text, $renderedObjects);
   }
@@ -87,6 +74,34 @@ class InlineObjectParser
   public function addType(InlineObjectType $type)
   {
     $this->_types[$type->getName()] = $type;
+  }
+
+  /**
+   * Called by parse to take an array of the inline objects array, and
+   * return an array of each one rendered
+   *
+   * @throws sfException
+   * @param  array $inlineObjects The inline objects array (keys: type, name, arguments)
+   * @return array
+   */
+  protected function _renderInlineObjectsFromArray($inlineObjects)
+  {
+    $renderedObjects = array();
+    foreach ($inlineObjects as $key => $inlineObject)
+    {
+      $typeObject = $this->getType($inlineObject['type']);
+      if (!$typeObject)
+      {
+        throw new sfException(sprintf('No inline object type defined for "%s"', $inlineObject['type']));
+      }
+
+      $renderedObjects[$key] = $typeObject->render(
+        $inlineObject['name'],
+        $inlineObject['arguments']
+      );
+    }
+
+    return $renderedObjects;
   }
 
   /**
