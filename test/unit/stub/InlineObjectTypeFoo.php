@@ -4,6 +4,9 @@ class InlineObjectTypeFoo extends InlineObjectType
 {
   public function render($name, $options)
   {
-    return $name.'_foo';
+    $ret = $name.'_foo';
+    $ret .= isset($options['extra']) ? '_'.$options['extra'] : '';
+
+    return $ret;
   }
 }

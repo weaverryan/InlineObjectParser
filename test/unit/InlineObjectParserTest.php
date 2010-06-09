@@ -57,6 +57,7 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
       'Unrecognized type [other:test]' => 'Unrecognized type [other:test]',
       'Foo with options [foo:with_options bar=true]' => 'Foo with options with_options_foo',
       'Foo with options [foo:with_options label="my foo object"]' => 'Foo with options with_options_foo',
+      'Foo with used option [foo:with_options extra="testing"]' => 'Foo with used option with_options_foo_testing',
       'Name with quotes: [foo:"with quotes"]' => 'Name with quotes: with quotes_foo',
     );
 

@@ -66,7 +66,7 @@ class InlineObjectParser
 
       $renderedObjects[$key] = $typeObject->render(
         $inlineObject['name'],
-        $inlineObject['type']
+        $inlineObject['options']
       );
     }
 
