@@ -31,9 +31,9 @@ class InlineObjectTranslate extends InlineObjectType
      * is terribly inefficient. This is here just as an example.
      */
 
-    $from = isset($options['from']) ? isset($options['from']) : 'en';
-    $to = isset($options['to']) ? isset($options['to']) : 'en';
-    
+    $from = isset($options['from']) ? $options['from'] : 'en';
+    $to = isset($options['to']) ? $options['to'] : 'en'
+
     if ($from == $to)
     {
       return $name;
