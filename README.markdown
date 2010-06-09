@@ -42,7 +42,8 @@ raw text to the ->parse() function:
     InlineObjectAutoloader::register();
 
     $parser = new InlineObjectParser();
-    $parser->addType('image', 'InlineObjectImage'); // register any types (more details below)
+    $type = new InlineObjectImageType('image');
+    $parser->addType($type); // register some type (more details below)
 
     echo $parser->parse('Display a [image:banana.png width="50"] image.');
 
@@ -58,14 +59,14 @@ of `InlineObjectType` and define how the type should be rendered.
 
     class InlineObjectImage extends InlineObjectType
     {
-      public function render()
+      public function render($name, $options)
       {
-        $url = '/images/'.$this->getName();
+        $url = '/images/'.$name;
         
         return sprintf(
           '<img src="%s"%s />',
           $url,
-          InlineObjectToolkit::arrayToAttributes($this->getOptions())
+          InlineObjectToolkit::arrayToAttributes($options)
         );
       }
     }
@@ -74,7 +75,8 @@ To use the new type, simply tell the parser about it via the `register()`
 method.
 
     $parser = new InlineObjectParser();
-    $parser->register('image', 'InlineObjectImage');
+    $type = new InlineObjectImageType('image');
+    $parser->register($type);
     
     echo $parser->parse('Display a [image:banana.png width="50"] image.');
 
