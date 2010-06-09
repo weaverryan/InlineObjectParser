@@ -87,12 +87,15 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
 
     $parsed = $parser->parseTypes('With foo [foo:test]');
     $this->assertEquals('With foo %%INLINE_OBJECT_0%%', $parsed[0]);
-    $this->assertEquals(array(new InlineObjectTypeFoo('test')), $parsed[1]);
-
+    $this->assertEquals(array(
+      array('type' => 'foo', 'name' => 'test', 'options' => array())
+      ), $parsed[1]
+    );
+    
     $parsed = $parser->parseTypes('With foo [foo:test] and bar [bar:test]');
     $objects = array(
-      new InlineObjectTypeFoo('test'),
-      new InlineObjectTypeBar('test'),
+      array('type' => 'foo', 'name' => 'test', 'options' => array()),
+      array('type' => 'bar', 'name' => 'test', 'options' => array()),
     );
     $this->assertEquals('With foo %%INLINE_OBJECT_0%% and bar %%INLINE_OBJECT_1%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
@@ -103,14 +106,14 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
 
     $parsed = $parser->parseTypes('Foo with options [foo:with_options bar=true]');
     $objects = array(
-      new InlineObjectTypeFoo('with_options', array('bar' => true)),
+      array('type' => 'foo', 'name' => 'with_options', 'options' => array('bar' => 'true'))
     );
     $this->assertEquals('Foo with options %%INLINE_OBJECT_0%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
 
     $parsed = $parser->parseTypes('Foo with options [foo:with_options label="my foo object"]');
     $objects = array(
-      new InlineObjectTypeFoo('with_options', array('label' => 'my foo object')),
+      array('type' => 'foo', 'name' => 'with_options', 'options' => array('label' => 'my foo object'))
     );
     $this->assertEquals('Foo with options %%INLINE_OBJECT_0%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
@@ -128,7 +131,7 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
       ->method('getCache')
       ->will($this->returnValue(array(
         'cached test %%INLINE_OBJECT_0%% string',
-        array(0 => new InlineObjectTypeFoo('test'))
+        array(0 => array('type' => 'foo', 'name' => 'test', 'options' => array()))
       )));
     $stub->addType('foo', $foo);
     $stub->addType('bar', $bar);
