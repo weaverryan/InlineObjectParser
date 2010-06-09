@@ -32,7 +32,7 @@ class InlineObjectTranslate extends InlineObjectType
      */
 
     $from = isset($options['from']) ? $options['from'] : 'en';
-    $to = isset($options['to']) ? $options['to'] : 'en'
+    $to = isset($options['to']) ? $options['to'] : 'en';
 
     if ($from == $to)
     {
