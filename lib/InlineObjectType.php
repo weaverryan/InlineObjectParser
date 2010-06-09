@@ -33,9 +33,9 @@ abstract class InlineObjectType
    * Renders the object using the given name and options properties
    *
    * @param string $name The name/key for the inline object
-   * @param array $options The inline options for this object
+   * @param array $args The inline options for this object
    */
-  abstract public function render($name, $options);
+  abstract public function render($name, $args);
 
   /**
    * Returns the name/key for this type.

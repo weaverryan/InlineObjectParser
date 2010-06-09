@@ -59,14 +59,14 @@ of `InlineObjectType` and define how the type should be rendered.
 
     class InlineObjectImage extends InlineObjectType
     {
-      public function render($name, $options)
+      public function render($name, $arguments)
       {
         $url = '/images/'.$name;
         
         return sprintf(
           '<img src="%s"%s />',
           $url,
-          InlineObjectToolkit::arrayToAttributes($options)
+          InlineObjectToolkit::arrayToAttributes($arguments)
         );
       }
     }

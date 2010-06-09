@@ -2,10 +2,10 @@
 
 class InlineObjectTypeFoo extends InlineObjectType
 {
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
     $ret = $name.'_foo';
-    $ret .= isset($options['extra']) ? '_'.$options['extra'] : '';
+    $ret .= isset($arguments['extra']) ? '_'.$arguments['extra'] : '';
 
     return $ret;
   }

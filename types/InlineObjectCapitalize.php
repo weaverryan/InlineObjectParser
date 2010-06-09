@@ -17,7 +17,7 @@
 
 class InlineObjectCapitalize extends InlineObjectType
 {
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
     return strtoupper($name);
   }

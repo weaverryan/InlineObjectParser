@@ -54,9 +54,9 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
       'With foo [foo:test]' => 'With foo test_foo',
       'With foo [foo:test] and bar [bar:test]' => 'With foo test_foo and bar test_bar',
       'Unrecognized type [other:test]' => 'Unrecognized type [other:test]',
-      'Foo with options [foo:with_options bar=true]' => 'Foo with options with_options_foo',
-      'Foo with options [foo:with_options label="my foo object"]' => 'Foo with options with_options_foo',
-      'Foo with used option [foo:with_options extra="testing"]' => 'Foo with used option with_options_foo_testing',
+      'Foo with arguments [foo:with_arguments bar=true]' => 'Foo with arguments with_arguments_foo',
+      'Foo with arguments [foo:with_arguments label="my foo object"]' => 'Foo with arguments with_arguments_foo',
+      'Foo with used argument [foo:with_arguments extra="testing"]' => 'Foo with used argument with_arguments_foo_testing',
       'Name with quotes: [foo:"with quotes"]' => 'Name with quotes: with quotes_foo',
     );
 
@@ -87,14 +87,14 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
     $parsed = $parser->parseTypes('With foo [foo:test]');
     $this->assertEquals('With foo %%INLINE_OBJECT_0%%', $parsed[0]);
     $this->assertEquals(array(
-      array('type' => 'foo', 'name' => 'test', 'options' => array())
+      array('type' => 'foo', 'name' => 'test', 'arguments' => array())
       ), $parsed[1]
     );
     
     $parsed = $parser->parseTypes('With foo [foo:test] and bar [bar:test]');
     $objects = array(
-      array('type' => 'foo', 'name' => 'test', 'options' => array()),
-      array('type' => 'bar', 'name' => 'test', 'options' => array()),
+      array('type' => 'foo', 'name' => 'test', 'arguments' => array()),
+      array('type' => 'bar', 'name' => 'test', 'arguments' => array()),
     );
     $this->assertEquals('With foo %%INLINE_OBJECT_0%% and bar %%INLINE_OBJECT_1%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
@@ -103,18 +103,18 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('Unrecognized type [other:test]', $parsed[0]);
     $this->assertEquals(array(), $parsed[1]);
 
-    $parsed = $parser->parseTypes('Foo with options [foo:with_options bar=true]');
+    $parsed = $parser->parseTypes('Foo with arguments [foo:with_arguments bar=true]');
     $objects = array(
-      array('type' => 'foo', 'name' => 'with_options', 'options' => array('bar' => 'true'))
+      array('type' => 'foo', 'name' => 'with_arguments', 'arguments' => array('bar' => 'true'))
     );
-    $this->assertEquals('Foo with options %%INLINE_OBJECT_0%%', $parsed[0]);
+    $this->assertEquals('Foo with arguments %%INLINE_OBJECT_0%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
 
-    $parsed = $parser->parseTypes('Foo with options [foo:with_options label="my foo object"]');
+    $parsed = $parser->parseTypes('Foo with arguments [foo:with_arguments label="my foo object"]');
     $objects = array(
-      array('type' => 'foo', 'name' => 'with_options', 'options' => array('label' => 'my foo object'))
+      array('type' => 'foo', 'name' => 'with_arguments', 'arguments' => array('label' => 'my foo object'))
     );
-    $this->assertEquals('Foo with options %%INLINE_OBJECT_0%%', $parsed[0]);
+    $this->assertEquals('Foo with arguments %%INLINE_OBJECT_0%%', $parsed[0]);
     $this->assertEquals($objects, $parsed[1]);
   }
 
@@ -130,7 +130,7 @@ class InlineObjectParserTest extends PHPUnit_Framework_TestCase
       ->method('getCache')
       ->will($this->returnValue(array(
         'cached test %%INLINE_OBJECT_0%% string',
-        array(0 => array('type' => 'foo', 'name' => 'test', 'options' => array()))
+        array(0 => array('type' => 'foo', 'name' => 'test', 'arguments' => array()))
       )));
     $stub->addType($foo);
     $stub->addType($bar);

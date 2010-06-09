@@ -24,15 +24,15 @@ class InlineObjectTranslate extends InlineObjectType
     $_url = 'http://ajax.googleapis.com/ajax/services/language/translate',
     $_apiVersion = '1.0';
 
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
     /*
      * Obviously, using an API to translate text without any type of cache
      * is terribly inefficient. This is here just as an example.
      */
 
-    $from = isset($options['from']) ? $options['from'] : 'en';
-    $to = isset($options['to']) ? $options['to'] : 'en';
+    $from = isset($arguments['from']) ? $arguments['from'] : 'en';
+    $to = isset($arguments['to']) ? $arguments['to'] : 'en';
 
     if ($from == $to)
     {

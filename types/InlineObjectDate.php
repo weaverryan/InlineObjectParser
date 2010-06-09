@@ -17,7 +17,7 @@
 
 class InlineObjectDate extends InlineObjectType
 {
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
     switch ($name)
     {

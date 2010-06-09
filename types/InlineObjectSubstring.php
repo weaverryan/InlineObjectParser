@@ -17,10 +17,10 @@
 
 class InlineObjectSubstring extends InlineObjectType
 {
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
-    $start = isset($options['start']) ? $options['start'] : 0;
-    $length = isset($options['length']) ? $options['length'] : false;
+    $start = isset($arguments['start']) ? $arguments['start'] : 0;
+    $length = isset($arguments['length']) ? $arguments['length'] : false;
     
     if ($length === false)
     {

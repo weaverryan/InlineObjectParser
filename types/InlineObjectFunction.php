@@ -17,9 +17,9 @@
 
 class InlineObjectFunction extends InlineObjectType
 {
-  public function render($name, $options)
+  public function render($name, $arguments)
   {
-    $arg = isset($options['arg']) ? $options['arg'] : null;
+    $arg = isset($arguments['arg']) ? $arguments['arg'] : null;
 
     return call_user_func($name, $arg);
   }

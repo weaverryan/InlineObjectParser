@@ -55,7 +55,7 @@ class InlineObjectParser
     $parsed = $this->parseTypes($text, $key);
 
     $text = $parsed[0];
-    $objects = $parsed[1]; // array with type, name, and options keys
+    $objects = $parsed[1]; // array with type, name, and arguments keys
 
     // Create an array of the text from the rendered objects
     $renderedObjects = array();
@@ -69,7 +69,7 @@ class InlineObjectParser
 
       $renderedObjects[$key] = $typeObject->render(
         $inlineObject['name'],
-        $inlineObject['options']
+        $inlineObject['arguments']
       );
     }
 
@@ -156,7 +156,7 @@ class InlineObjectParser
         $name = $e[1];
         unset($e[0], $e[1]);
         
-        $optionsString = implode('"', $e);
+        $argumentsString = implode('"', $e);
       }
       else
       {
@@ -165,10 +165,10 @@ class InlineObjectParser
         $name = $e[0];
         unset($e[0]);
         
-        $optionsString = implode(' ', $e);
+        $argumentsString = implode(' ', $e);
       }
 
-      $options = InlineObjectToolkit::stringToArray($optionsString);
+      $arguments = InlineObjectToolkit::stringToArray($argumentsString);
 
       // create an incrementing key for replacement later
       $objectKey = self::_generateInlineToken($key);
@@ -177,7 +177,7 @@ class InlineObjectParser
       $inlineObjects[$key] = array(
         'type'    => $types[$key],
         'name'    => $name,
-        'options' => $options,
+        'arguments' => $arguments,
       );
       $text = str_replace($matches[0][$key], $objectKey, $text);
     }
