@@ -142,7 +142,7 @@ class InlineObjectParser
     }
 
     // Check for a cached result
-    if ($parsed = $this->getCache($cacheKey))
+    if ($cacheKey && $parsed = $this->getCache($cacheKey))
     {
       return $parsed;
     }
