@@ -235,7 +235,7 @@ class InlineObjectParser
   {
     $typesMatch = implode('|', array_keys($this->_types));
 
-    return '/\[('.$typesMatch.'):(.*?)\]/';
+    return '/\[('.$typesMatch.'):(.*?)\]/s';
   }
 
   /**
