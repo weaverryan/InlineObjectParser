@@ -1,5 +1,7 @@
 <?php
 
+namespace InlineObject;
+
 /**
  * Parses a string and converts inline syntax into InlineObject instances
  * 
@@ -8,13 +10,11 @@
  * then rendered.
  * 
  * The final output is a processed string
- * 
- * @package     InlineObjectParser
+ *
  * @author      Ryan Weaver <ryan@thatsquality.com>
  * @author      Jonathan H. Wage <jonwage@gmail.com>
  */
-
-class InlineObjectParser
+class Parser
 {
   /**
    * An array of InlineObjectType objects where the key is the inline key
@@ -69,9 +69,9 @@ class InlineObjectParser
    * @example
    * $parser->addType('image', $inlineType);
    * 
-   * @param InlineObjectType $Type The InlineObject class that will render the type
+   * @param TypeInterface $Type The InlineObject class that will render the type
    */
-  public function addType(InlineObjectType $type)
+  public function addType(TypeInterface $type)
   {
     $this->_types[$type->getName()] = $type;
   }
@@ -92,7 +92,7 @@ class InlineObjectParser
       $typeObject = $this->getType($inlineObject['type']);
       if (!$typeObject)
       {
-        throw new sfException(sprintf('No inline object type defined for "%s"', $inlineObject['type']));
+        throw new \Exception(sprintf('No inline object type defined for "%s"', $inlineObject['type']));
       }
 
       $renderedObjects[$key] = $typeObject->render(
@@ -183,7 +183,7 @@ class InlineObjectParser
         $argumentsString = implode(' ', $e);
       }
 
-      $arguments = InlineObjectToolkit::stringToArray($argumentsString);
+      $arguments = Toolkit::stringToArray($argumentsString);
 
       // create an incrementing key for replacement later
       $objectKey = self::_generateInlineToken($key);
@@ -209,7 +209,7 @@ class InlineObjectParser
    * Returns the InlineObjectType connected with a given name/key
    *
    * @param  string $name The name/key corresponding to the type
-   * @return InlineObjectType
+   * @return TypeInterface
    */
   public function getType($name)
   {
@@ -219,7 +219,7 @@ class InlineObjectParser
   /**
    * Returns the array of type => class entries that will be processed
    * 
-   * @return array
+   * @return TypeInterface[]
    */
   public function getTypes()
   {

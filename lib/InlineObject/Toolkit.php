@@ -1,15 +1,15 @@
 <?php
 
+namespace InlineObject;
+
 /**
  * Toolkit for working with strings.
  * 
  * Taken from the symfony project (http://www.symfony-project.org)
- * 
- * @package     InlineObjectParser
+ *
  * @author      Ryan Weaver <ryan@thatsquality.com>
  */
-
-class InlineObjectToolkit
+class Toolkit
 {
   /**
    * Converts string to array
